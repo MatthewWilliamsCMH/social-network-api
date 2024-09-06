@@ -1,0 +1,17 @@
+Routes
+home route
+GET /?
+
+api routes
+GET all users and all thoughts (Is this one return or two? Check README animation.)
+GET a single user (one return or two?)
+POST user
+PUT user
+DELETE user
+POST thought
+PUT thought
+DELETE thought
+POST friend
+DELETE friend
+POST reaction
+DELETE reaction
