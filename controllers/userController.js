@@ -1,17 +1,19 @@
 const { ObjectId } = require('mongoose').Types; //requires mongoose type object id, which we'll use in some of the functions
-const { User, Thought, Reaction } = require('../models');
+const { User, Thought } = require('../models');
 
 module.exports = {
     //get all users
     async getUsers(req, res) {
         try {
             const users = await User.find();
+            res.json(users);
         }
         catch (err) {
             console.log(err);
             return res.status(500).json(err);
         }
     },
+
     //post a user
     async postUser(req, res) {
         try {
@@ -19,6 +21,7 @@ module.exports = {
             res.json(user);
         }
         catch (err) {
+            console.log(err);
             res.status(500).json(err);
         }
     },
@@ -26,14 +29,11 @@ module.exports = {
     //get a user
     async getOneUser(req, res) {
         try {
-            const user = await User.findOne(
-                { _id: req.params.userId }
-            )
-            .select('-__v'); //this ensures that it retrieves the most recent user data (in case it was updated in another process)
-
+            const user = await User.findOne({ _id: req.params.userId }).select('-__v'); //-__v ensures that the version field (automatically added by mongoose) is not returned
             if (!user) {
-                return res.status(404).json({ message: 'No user with that ID found.' })
+                return res.status(404).json({ message: 'The user was not found.' })
             }
+            res.json(user);
         } 
         catch (err) {
             console.log(err);
@@ -46,85 +46,36 @@ module.exports = {
         try {
             const user = await User.findOneAndUpdate(
                 {_id: req.params.userId},
-                {$set: req.body}, //what does $set do?
-                {runValidators: true, new: true} //what is the new: true statement for?
+                {$set: req.body}, //writes the data in req.body into the document returned in the request; fields that are not in req.body are left unchanged
+                {runValidators: true, new: true} //new ensures that the data that's returned is the updated data, not the pre-update data; if false or omitted, the data before the update is executed is returned
             );
             res.json(user);
         }
         catch (err) {
+            console.log(err);
             res.status(500).json(err);
-        }
+        };
     },
-//HERE
-  // Delete a student and remove them from the course
-  async deleteStudent(req, res) {
-    try {
-      const student = await Student.findOneAndRemove({ _id: req.params.studentId });
 
-      if (!student) {
-        return res.status(404).json({ message: 'No such student exists' });
-      }
+    //delete a user; BONUS: delete all their thoughts as well
+    async deleteUser(req, res) {
+        try {
+            const user = await User.findOneAndRemove({ _id: req.params.userId });
+            if (!user) {
+                return res.status(404).json({ message: 'The user was not found.' });
+            };
 
-      const course = await Course.findOneAndUpdate(
-        { students: req.params.studentId },
-        { $pull: { students: req.params.studentId } },
-        { new: true }
-      );
-
-      if (!course) {
-        return res.status(404).json({
-          message: 'Student deleted, but no courses found',
-        });
-      }
-
-      res.json({ message: 'Student successfully deleted' });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
+            const thought = await Thought.deleteMany({ users: req.params.userId });
+            if (!thought) {
+                return res.status(404).json({ message: 'The user was deleted, but no thoughts were found.' });
+            };
+            res.json({ message: 'The user and all associated thoughts were deleted.' });
+        } 
+        catch (err) {
+          console.log(err);
+          res.status(500).json(err);
+        };
     }
-  },
-
-  // Add an assignment to a student
-  async addAssignment(req, res) {
-    console.log('You are adding an assignment');
-    console.log(req.body);
-
-    try {
-      const student = await Student.findOneAndUpdate(
-        { _id: req.params.studentId },
-        { $addToSet: { assignments: req.body } },
-        { runValidators: true, new: true }
-      );
-
-      if (!student) {
-        return res
-          .status(404)
-          .json({ message: 'No student found with that ID :(' });
-      }
-
-      res.json(student);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  },
-  // Remove assignment from a student
-  async removeAssignment(req, res) {
-    try {
-      const student = await Student.findOneAndUpdate(
-        { _id: req.params.studentId },
-        { $pull: { assignment: { assignmentId: req.params.assignmentId } } },
-        { runValidators: true, new: true }
-      );
-
-      if (!student) {
-        return res
-          .status(404)
-          .json({ message: 'No student found with that ID :(' });
-      }
-
-      res.json(student);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  },
+    //add a friend
+    //delete a friend
 };
