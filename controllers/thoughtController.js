@@ -1,5 +1,5 @@
-const { ObjectId } = require('mongoose').Types; //requires mongoose type object id, which we'll use in some of the functions
-const { User, Thought, Reaction } = require('../models');
+// const { ObjectId } = require('mongoose').Types; //requires mongoose type object id, which we'll use in some of the functions. Needed?
+const { User, Thought, reactionSchema } = require('../models');
 
 module.exports = {
     //get all thoughts
@@ -24,18 +24,17 @@ module.exports = {
 
             const user = await User.findOneAndUpdate( //this block writes the thought into the thoughts array for the user at userId
                 { _id: req.params.userId },
-                { $addToSet: { thought: thought._id } },
+                { $addToSet: { thoughts: thought._id } },
                 { runValidators: true, new: true }
             );
-
             if (!user) {
                 return res.status(404).json({ message: 'The user was not found.' });
             };
             res.json(user);
         }
         catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+            console.log(err);
+            res.status(500).json(err);
         }
     },
 
@@ -92,5 +91,16 @@ module.exports = {
             console.log(err);
             res.status(500).json(err);
         }
+    },
+
+    //post reaction
+    async postReaction(req, res) {
+        console.log("hello")
+    },
+
+    //delete reaction
+    async deleteReaction(req, res) {
+        console.log("hello")
+
     }
 };

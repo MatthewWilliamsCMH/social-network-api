@@ -1,5 +1,5 @@
-const { ObjectId } = require('mongoose').Types; //requires mongoose type object id, which we'll use in some of the functions
-const { User, Thought } = require('../models');
+// const { ObjectId } = require('mongoose').Types; //requires mongoose type object id, which we'll use in some of the functions. Needed?
+const { User, Thought, reactionSchema } = require('../models');
 
 module.exports = {
     //get all users
@@ -75,7 +75,15 @@ module.exports = {
           console.log(err);
           res.status(500).json(err);
         };
-    }
+    },
+
     //add a friend
+    async postFriend(req, res) {
+        console.log("hello")
+    },
+
     //delete a friend
+    async deleteFriend(req, res) {
+        console.log("hello")
+    }
 };

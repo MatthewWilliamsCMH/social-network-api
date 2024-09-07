@@ -22,6 +22,12 @@ const reactionSchema = new Schema (
                 return createdAtValue.toLocaleDateString();
             }
         }
+    },
+    {
+        toJSON: {
+            getters: true,
+        },
+        id: false
     }
 );
 
