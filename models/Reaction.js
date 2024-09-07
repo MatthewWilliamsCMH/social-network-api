@@ -1,5 +1,4 @@
 const { Schema } = require('mongoose');
-const thoughtSchema = require ('/Thought');
 
 const reactionSchema = new Schema (
     {
