@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const User = require('./User');
 
 const reactionSchema = new Schema (
     {
@@ -9,7 +10,7 @@ const reactionSchema = new Schema (
         },
         username: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
             required: true,
         },
         createdAt: {

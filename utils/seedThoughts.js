@@ -1,66 +1,18 @@
 const mongoose = require('mongoose');
-const { User, Thought, Reaction} = require('./models');
-
-// Connect to your MongoDB database
-mongoose.connect('mongodb://localhost:27017/your-database-name', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-const seedUsers = async () => {
-    try {
-        // Delete existing users
-        await Thoughts.deleteMany({});
-
-        // Create new users
-        const thoughts = await Thought.create([
-            {
-                username: 'matthew',
-                email: 'matthew@gmail.com'
-            },
-            {
-                username: 'mark',
-                email: 'mark@gmail.com'
-            },
-            {
-                username: 'matt',
-                email: 'matt@gmail.com'
-            },
-            {
-                username: 'kevin',
-                email: 'kevin@gmail.com'
-            },
-            {
-                username: 'jeff',
-                email: 'jeff@gmail.com'
-            },
-            {
-                username: 'jan',
-                email: 'jan@gmail.com'
-            },
-            {
-                username: 'diane',
-                email: 'diane@gmail.com'
-            },
-            {
-                username: 'theresa',
-                email: 'theresa@gmail.com'
-            }
-        ]);
-
-        console.log('Users seeded:', users);
-        mongoose.connection.close();
-    }
-};
+const { User, Thought } = require('./models');
 
 const seedThoughts = async () => {
     try {
-        // Delete existing thoughts
-        await Thought.deleteMany({});
+        await mongoose.connect('mongodb://localhost:27017/socialdb', { useNewUrlParser: true, useUnifiedTopology: true });
 
-        const userIds = users.map(user => user._id); //gets all the user ids so they're available to add to thoughts
+        //get all users ids
+        const users = await User.find();
+        const userIds = users.map(user._id);
 
-        // Create new thoughts
+        //delete existing thoughts to start fresh
+        await Thoughts.deleteMany({});
+
+        //post thoughts
         const thoughts = await Thought.create([
             {
                 thoughtText: 'Here\'s a thought.',
@@ -184,7 +136,7 @@ const seedThoughts = async () => {
             },
         ]);
 
-        console.log('Thoughts seeded:', users);
+        console.log('Thoughts was seeded.');
         mongoose.connection.close();
     } catch (err) {
         console.error('Error seeding the database:', err);
@@ -192,5 +144,4 @@ const seedThoughts = async () => {
     }
 };
 
-seedUsers;
 seedThoughts();

@@ -18,14 +18,9 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: (createdAtValue) => createdAtValue.toLocaleString();
+            get: (createdAtValue) => createdAtValue.toLocaleString()
         },
-        reactions: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Reactions'
-            }
-        ]
+        reactions: [reactionSchema]
     },
     {
         toJSON: {
