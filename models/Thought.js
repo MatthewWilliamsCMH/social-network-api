@@ -1,5 +1,5 @@
 const { Schema, model }= require('mongoose');
-const reactionSchema = require('./Reaction');
+const Reaction = require('./Reaction')
 
 const thoughtSchema = new Schema(
     {
@@ -10,19 +10,21 @@ const thoughtSchema = new Schema(
             minLength: 1, //is the needed since the field is required?
             maxLength: 280
         },
+        username: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
         createdAt: {
             type: Date,
             default: Date.now,
-            get: (createdAtValue) => {
-                return createdAtValue.toLocaleDateString();
-            }
-        },
-        username: {
-            type: String, //I assume this is not going to be the user's name but his/her id. Yes?
-            required: true
+            get: (createdAtValue) => createdAtValue.toLocaleString();
         },
         reactions: [
-            reactionSchema
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Reactions'
+            }
         ]
     },
     {
@@ -40,6 +42,6 @@ thoughtSchema
         return this.reactions.length;
     });
 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;
