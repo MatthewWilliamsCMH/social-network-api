@@ -27,6 +27,6 @@ router.route('/:userId').get(getOneUser).put(putUser).delete(deleteUser) //three
 //FROM THE README **`/api/users/:userId/friends/:friendId`**
 //post and delete a friend from an existing user (for clarity: userId/friend/userId [friend])
 //this is cross-reference; the friend must exist in users collection
-router.route('/users/:userId/friends/:friendId').post(postFriend).delete(deleteFriend);
+router.route('/:userId/friends/:friendId').post(postFriend).delete(deleteFriend);
 
 module.exports = router;

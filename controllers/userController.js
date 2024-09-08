@@ -80,11 +80,48 @@ module.exports = {
 
     //add a friend
     async postFriend(req, res) {
-        console.log("hello")
-    },
+        try {
+            const { userId, friendId } = req.params; //extract userId and friendID from the http request (if I were pulling from the body of the request, it would be req.body)
+            console.log(req.params)
+            if (!userId || !friendId) {
+                return res.status(404).json({message: 'The user, the friend, or both were not found.'})
+            };
+            const user = await User.findByIdAndUpdate( //update the user's friend array (note that we use POST even though we're updating a record instead of createing a new one)
+                userId,
+                { $addToSet: { friends: friendId } },
+                { new: true }
+            );
+            if (!user) {
+                return res.status(404).json({ message: 'The user was not found.' });
+            }
+            res.json(user);
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
+  },
 
     //delete a friend
     async deleteFriend(req, res) {
-        console.log("hello")
+        try {
+            const { userId, friendId } = req.params; 
+            if (!userId || !friendId) {
+                return res.status(404).json({message: 'The user, the friend, or both were not found.'})
+            };
+            const user = await User.findByIdAndUpdate( //note that we're not doing findByIdAndDelete because we're not deleting a user; we're updating a user's friends array
+                userId,
+                { $pull: {friends: friendId } },
+                { new: true }
+            ); 
+            if (!user) {
+                return res.status(404).json({ message: 'The user was not found.' });
+            }
+            res.json(user);
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
     }
 };

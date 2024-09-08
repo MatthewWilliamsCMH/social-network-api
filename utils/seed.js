@@ -156,6 +156,27 @@ connection.once('open', async () => {
     
         console.log('Thoughts was seeded.');
 
+        //add friends to users
+        const friendUpdates = [
+          { userId: userIds[0], friends: [userIds[2], userIds[4], userIds[6]] },
+          { userId: userIds[1], friends: [userIds[0], userIds[3]] },
+          { userId: userIds[2], friends: [userIds[3], userIds[4], userIds[5], userIds[6]] },
+          { userId: userIds[3], friends: [userIds[1], userIds[2], userIds[7]] },
+          { userId: userIds[4], friends: [userIds[7]] },
+          { userId: userIds[5], friends: [userIds[5], userIds[6]] },
+          { userId: userIds[6], friends: [userIds[0], userIds[1], userIds[7]] },
+          { userId: userIds[7], friends: [userIds[5], userIds[6], userIds[7]] }
+        ]
+
+        for (const { userId, friends} of friendUpdates) {
+          await User.findByIdAndUpdate (
+            userId,
+            { $addToSet: { friends: { $each: friends } } },
+            { new: true }
+          )
+        }
+
+        // affiliate thoughts with users
         for (const user of users) {
           const userThoughts = thoughts.filter(thought => thought.userId.toString() === user._id.toString())
           await User.findByIdAndUpdate(
