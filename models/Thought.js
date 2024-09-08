@@ -10,7 +10,7 @@ const thoughtSchema = new Schema(
             minLength: 1, //is the needed since the field is required?
             maxLength: 280
         },
-        username: {
+        userId: {
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: true

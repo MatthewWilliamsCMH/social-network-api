@@ -9,11 +9,11 @@ const {
     deleteFriend
 } = require('../../controllers/userController');
 
-//get all users, post user
-router.route('/users').get(getUsers).post(postUser) //this defines two methods on the same route path. In other words, GET and POST users will both go to "/" but have different endpoints.
+//get all users, post a user
+router.route('/').get(getUsers).post(postUser) //this defines two methods on the same route path. In other words, GET and POST users will both go to "/" but have different endpoints.
 
 //get a user, put a user, delete a user
-router.route('/users/:userId').get(getOneUser).put(putUser).delete(deleteUser) //three endpoints on one http route path
+router.route('/:userId').get(getOneUser).put(putUser).delete(deleteUser) //three endpoints on one http route path
 
 //post a user
 //I think this is covered above (".post(createUser)")

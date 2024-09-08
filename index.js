@@ -5,10 +5,12 @@ const routes = require('./routes'); //assign the subdirectory to the variable "r
 
 const PORT = process.env.PORT || 3001; //set port to whatever is defined in the environment variable OR 3001
 const app = express(); // assign the instance of the express application to the "app" variable
+const apiRoutes = require('./routes/api'); //added per chatGPT
 
 app.use(express.urlencoded({ extended: true })); //configures app (an express instance) to handle urls properly
 app.use(express.json()); //configures app to handle JSON
-app.use(routes); //this tells app where to find route handlers (the index.js file in the routes folder loads the specific route files)
+app.use('/api', apiRoutes) //added per chatGPT to replace the below
+// app.use(routes); //this tells app where to find route handlers (the index.js file in the routes folder loads the specific route files)
 
 db.once('open', () => {  //this block registers an event listener that waits for a connection to the db; "once" ensures that it only makes one connection
   app.listen(PORT, () => {
