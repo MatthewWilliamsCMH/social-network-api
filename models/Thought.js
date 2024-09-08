@@ -1,12 +1,12 @@
 const { Schema, model }= require('mongoose');
-const Reaction = require('./Reaction')
+const reactionSchema = require('./Reaction')
 
 const thoughtSchema = new Schema(
     {
         thoughtText: {
             type: String,
             required: true,
-            trimmed: true,
+            trim: true,
             minLength: 1, //is the needed since the field is required?
             maxLength: 280
         },

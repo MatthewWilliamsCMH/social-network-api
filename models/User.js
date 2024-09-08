@@ -7,13 +7,13 @@ const userSchema = new Schema(
             type: String,
             unique: true,
             required: true,
-            trimmed: true
+            trim: true
         },
         email: {
             type: String,
             required: true,
             unique: true,
-            trimmed: true,
+            trim: true,
             validate: {
                 validator: function(v) {
                     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
