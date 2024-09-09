@@ -17,3 +17,5 @@ db.once('open', () => {  //this block registers an event listener that waits for
     console.log(`API server running on port ${PORT}!`);
   });
 });
+
+//add a function call to execute the seed when the server is launched? Review acceptance criteria.
