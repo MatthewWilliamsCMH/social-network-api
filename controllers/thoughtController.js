@@ -88,12 +88,52 @@ module.exports = {
 
     //post reaction
     async postReaction(req, res) {
-        console.log("hello")
+        try {
+            const thoughtId = req.params.thoughtId //extract thoughtId from the http request (if I were pulling from the body of the request, it would be req.body)
+            const { reactionBody, userId } = req.body //extract reactionBody and userID from the request body
+            console.log(thoughtId);
+            console.log(reactionBody);
+            console.log(userId);
+
+            if (!thoughtId || !reactionBody || !userId) {
+                return res.status(404).json({message: 'The thought, reaction, or userID or a combination of the three was not found.'});
+            };
+            const thought = await Thought.findByIdAndUpdate(
+                thoughtId,
+                { $push: { reactions: { reactionBody, userId } } },
+                { new: true, runValidators: true}
+            );
+            if (!thought) {
+                return res.status(404).json({message: 'The thought was not found.'})
+            }
+            res.json(thought);
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
     },
 
     //delete reaction
     async deleteReaction(req, res) {
-        console.log("hello")
-
+        try {
+            const { thoughtId, reactionId } = req.params;
+            if (!thoughtId || !reactionId ) {
+                return res.status(404).json({message: 'The thought, the reaction, or both were not found.'});
+            };
+            const thought = await Thought.findByIdAndUpdate(
+                thoughtId,
+                { $pull: { reactions: { _id: reactionId } } },
+                { new: true, runValidators: true }
+            );
+            if (!thought) {
+                return res.status(404).json({message: 'The thought was not found.'});
+            };
+            return res.json(thought);
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
     }
 };

@@ -82,7 +82,6 @@ module.exports = {
     async postFriend(req, res) {
         try {
             const { userId, friendId } = req.params; //extract userId and friendID from the http request (if I were pulling from the body of the request, it would be req.body)
-            console.log(req.params)
             if (!userId || !friendId) {
                 return res.status(404).json({message: 'The user, the friend, or both were not found.'})
             };
