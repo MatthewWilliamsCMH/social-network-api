@@ -12,6 +12,7 @@ This repo includes code for a social-networking API to run on an Express server 
 - [Usage](#usage)
 - [License](#license)
 - [Contributing](#contributing)
+- [Acknowledgments](#acknowledgments)
 - [Tests](#tests)
 - [Questions](#questions)
 
@@ -33,6 +34,9 @@ Once initiated and seeded, you can test the Social-Networking API routes using I
 
 ## Contributing
 To contribute to the Social-Networking API, clone this repository locally and commit your code to a separate branch.
+
+## Acknowledgments
+This code relied heavily on project code used in a mini-project activity that the class worked on together and on ChatGPT for code checking and clarification. While I did adapt much of the code for my app, I worked very hard to understand what the code was doing. I feel about javascript now a lot like I feel about Spanish. I can read it and understand it somewhat, but don't ask me to speak it or write it without outside models. I'm not there yet. &#x1F623; Most of the comments in the code explaining what different statements do would not have been possible without ChatGPT's clear explanation of concepts that were covered quickly in class and were difficult to retain.
 
 ## Tests
 If you are making core library changes, please write unit tests for your code and ensure that everything is working correctly before opening a pull request.
