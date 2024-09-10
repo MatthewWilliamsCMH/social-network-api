@@ -18,13 +18,13 @@ module.exports = {
     async postThought(req, res) {
         try {
             const { thoughtText, userId } = req.body
-            const thought = await Thought.create({ //this block creates the thought and assigns the username to it. Should it be assiging the userId?
+            const thought = await Thought.create({ //this block creates the thought and assigns the userId to it
                 thoughtText,
                 userId
             });
 
             const user = await User.findByIdAndUpdate( //this block writes the thoughtId into the thoughts array for the user at userId
-                user,
+                userId,
                 { $addToSet: { thoughts: thought._id } },
                 { runValidators: true, new: true }
             ).select('-__v'); //added -__v here
